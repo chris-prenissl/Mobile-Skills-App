@@ -2,10 +2,10 @@ package de.christophprenissl.mobileskillsapp.presentation.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +26,7 @@ fun TechnologiesView(
 ) {
     val uiState by technologyViewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
             .safeContentPadding()
@@ -34,11 +34,13 @@ fun TechnologiesView(
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(paddingDefault)
     ) {
-        for (technology in uiState.technologies) {
-            TechnologyListItemView(
-                technology = technology,
-                onTap = { onViewTap?.invoke(technology) }
-            )
+        uiState.technologies.forEach { technology ->
+            item(key = technology.name) {
+                TechnologyListItemView(
+                    technology = technology,
+                    onTap = { onViewTap?.invoke(technology) }
+                )
+            }
         }
     }
 }
